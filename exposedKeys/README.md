@@ -2,7 +2,7 @@
 
 ## to run this example
 ### step 1:
-Start the backend server: `node exposedKey.js`
+From this directory, start the backend server: `node exposedKey.js`
 
 ### step 2:
 run indexBad.html with live server. Once running open the developer tools and observe the sources and the network tab as the "Fetch Data" button is clicked.
