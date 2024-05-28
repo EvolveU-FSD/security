@@ -12,5 +12,5 @@ userRoutes.route('/search').post(function(req, res) {
 });
 
 
-//What would happen if the search query is '"\;{}() ?
+//What would theoretically happen if the search query is '"\;{}() ?
 //What if the search query is ';while(true){}' ?

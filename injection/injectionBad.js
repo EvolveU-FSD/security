@@ -19,4 +19,4 @@ app.post('/login', function (req, res){
 });
 
 
-//What would happen if password = "[$ne]=abc123"? (Query Selector Injection)
+//What would theoretically happen if password = "[$ne]=abc123"? (Query Selector Injection)

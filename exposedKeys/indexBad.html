@@ -1,0 +1,27 @@
+<!DOCTYPE html> 
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Insecure API Key Example</title>
+	</head>
+	<body>
+		<h1>Insecure API Key Example</h1>
+		<button id="fetchDataBtn">Fetch Data</button> 
+		<pre id="result"></pre>
+		<script> // Exposed API key (insecure) 
+            const apiKey = 'YOUR_SECRET_API_KEY'; 
+            document.getElementById('fetchDataBtn').addEventListener('click', () => { 
+                fetch(`http://localhost:3000/datainsecure?api_key=${apiKey}`) 
+                .then(data => { 
+                    console.log("Success: ", data)
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 2); 
+                }) 
+                .catch(error => { 
+                    console.error('Error:', error); 
+                    document.getElementById('result').textContent = 'Error fetching data'; 
+                }); 
+            }); 
+        </script> 
+	</body>
+</html>
