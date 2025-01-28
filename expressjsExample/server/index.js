@@ -4,13 +4,20 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import easyWaf from 'easy-waf';
 import { isDisposableEmail } from './disposableEmailChecker/disposableEmailChecker.js'
+import { knownTorExitNodeIPList } from './ipListChecker/torExitNodes.js'
+import { bitwireBlocklist } from './ipListChecker/bitwireBlockList.js'
 
 const app = express(); 
 const PORT = 8080; 
 
 // Middleware 
+
+const ipBlacklist = ['127.0.0.1', '::1'].concat(
+    await knownTorExitNodeIPList(),
+    await bitwireBlocklist()
+);
 app.use(easyWaf({
-    allowedHTTPMethods: ['GET', 'POST'],
+    allowedHTTPMethods: ['GET', 'POST', 'PUT'],
     queryUrlWhitelist: ['github.com'],
     modules: {
         directoryTraversal: {
@@ -18,7 +25,7 @@ app.use(easyWaf({
             excludePaths: /^\/exclude$/i,
         },
     },
-    ipBlacklist: ['127.0.0.1', '::1'],
+    ipBlacklist: ipBlacklist,
     dryMode: true
 }));
 
@@ -47,9 +54,9 @@ const User = mongoose.model('User', UserSchema);
 
 app.post('/api/register', async (req, res) => { 
     const { username, email, password } = req.body; 
-    if(!isDisposableEmail(email)) {
+
+    if(!(await isDisposableEmail(email))) {
         try { 
-            
             const user = new User({ username, email, password }); 
             await user.save(); 
             res.status(201).send('User registered'); 
