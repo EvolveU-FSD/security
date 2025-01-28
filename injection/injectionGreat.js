@@ -1,7 +1,7 @@
 const sanitize = require('mongo-sanitize');
 const validator = require('validator');
 
-app.post('/login', function (req, res){
+app.post('/api/login', async (req, res) => {
     let user = sanitize(req.body.username);
     let validatedUser = validator.isEmail(user); //should return true
     let pass = sanitize(req.body.password);
@@ -11,16 +11,25 @@ app.post('/login', function (req, res){
         password: pass
     }
  if(validatedUser && validatedPass){
-    db.collection('user').findOne(query, function (err, user) {
-        if (err || !user) {
-            response.status(401).json({
+    try {
+        const user = await User.findOne(query);
+    
+        if (user.length === 0) {
+            return res.status(401).json({
                 status: "error",
                 message: "Invalid credentials.",
-              });
-        } else {
-            res.json({username: user.username });
+            });
         }
-    });
+
+        // Successful login
+        res.status(200).json({ username: user[0].username });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: "error",
+            message: "An internal server error occurred.",
+        });
+    }
 }
 });
 

@@ -3,20 +3,19 @@ import axios from 'axios';
 
 const Register = () => { 
     const [username, setUsername] = useState(''); 
-    const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState(''); 
 
     const handleSubmit = async (e) => { e.preventDefault(); 
         try { 
             const response = await axios.post(
-                'http://localhost:8080/api/register', 
-                { username, email, password }
+                'http://localhost:8080/api/login', 
+                { username, password }
             ); 
             console.log(response.data); 
-            alert('User registered successfully'); 
+            alert('User logged in successfully'); 
         } catch (error) { 
             console.error(error); 
-            alert('Error registering user'); 
+            alert('Error with user login'); 
         } 
     }; 
     return ( 
@@ -34,17 +33,6 @@ const Register = () => {
             </div> 
             <div> 
                 <label>
-                    Email:
-                </label> 
-                <input 
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
-                /> 
-            </div> 
-            <div> 
-                <label>
                     Password:
                 </label> 
                 <input 
@@ -55,7 +43,7 @@ const Register = () => {
                 /> 
             </div> 
             <button type="submit">
-                Register
+                login
             </button> 
         </form> 
     ); 

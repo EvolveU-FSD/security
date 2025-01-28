@@ -1,5 +1,5 @@
 # Exposed Key example
-
+This exercise is to simply show how a key can get exposed and how to prevent exposing it.
 ## to run this example
 ### step 1:
 From this directory, start the backend server: `node exposedKey.js`
